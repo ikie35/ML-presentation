@@ -223,9 +223,10 @@
             display: flex;
             flex-direction: column;
             justify-content: center;
+            align-items: center;
         }
         .post-title { font-size: 3.5rem; font-weight: 800; margin-bottom: 35px; background: var(--ig-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        .post-desc { font-size: 1.6rem; line-height: 1.8; color: var(--ig-text); max-width: 1100px; margin: 0 auto; }
+        .post-desc { font-size: 1.6rem; line-height: 1.8; color: var(--ig-text); max-width: 1100px; margin: 0 auto; text-align: justify; text-justify: inter-word; }
 
         .post-footer { padding: 16px; background: rgba(255,255,255,0.02); }
         .post-actions { display: flex; gap: 16px; margin-bottom: 10px; font-size: 1.2rem; }
@@ -321,8 +322,8 @@
                     <div class="post-content">
                         <div class="post-text-body">
                             <h2 class="post-title">The Problem</h2>
-                            <div style="text-align: left; max-width: 900px; margin: 0 auto; line-height: 1.6;">
-                                <div class="list-item">🛑 <b>Fatalities:</b> Driver fatigue is estimated to be a contributing factor in up to 20% of fatal road accidents globally. It remains a critical safety gap that traditional monitoring fails to address.</div>
+                            <div style="text-align: justify; text-justify: inter-word; max-width: 1000px; margin: 0 auto; line-height: 1.6;">
+                                <div class="list-item">🛑 <b>Fatalities:</b> Driver fatigue is estimated to be a contributing factor in up to 20% of fatal road accidents globally. It remains a critical safety gap that traditional monitoring fails to address effectively.</div>
                                 <div class="list-item">🔌 <b>Intrusive Sensors:</b> Existing solutions often rely on physiological sensors (EEG/ECG) that are uncomfortable, distracting, and impractical for long-term daily driving.</div>
                                 <div class="list-item">💻 <b>Hardware Barrier:</b> Most high-accuracy AI models require significant GPU power. There is a lack of efficient solutions capable of running on low-cost edge devices like the Raspberry Pi.</div>
                             </div>
@@ -513,7 +514,7 @@
                     <div class="post-content">
                         <div class="post-text-body">
                             <h2 class="post-title">Conclusion</h2>
-                            <p class="post-desc">YOLOv11n is highly effective but demands hardware acceleration on edge. Future work focuses on NPU integration.</p>
+                            <p class="post-desc">The project successfully demonstrates that <strong>YOLOv11n</strong> can achieve high detection accuracy for driver state monitoring. However, real-time performance on standalone edge hardware remains a bottleneck, necessitating hardware acceleration. Future development will focus on integrating NPU technology to achieve seamless real-time safety response.</p>
                         </div>
                     </div>
                     <div class="post-footer"><div class="post-actions">❤️ 💬 🚀</div><div class="post-caption"><b>conclusion</b> Final remarks on this project's vision safety system.</div></div>
