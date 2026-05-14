@@ -3,623 +3,380 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Research Project: Real-Time Driver Drowsiness Detection</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;600;800;900&display=swap" rel="stylesheet">
+    <title>DrowsyDetect | Research Project</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary: #4cc9f0;
-            --primary-dark: #4361ee;
-            --secondary: #7209b7;
-            --accent: #f72585;
-            --bg: #050505;
-            --card-bg: rgba(255, 255, 255, 0.03);
-            --border: rgba(255, 255, 255, 0.1);
-            --text: #e0e0e0;
-            --text-dim: #a0a0a0;
-            --gradient: linear-gradient(135deg, #4361ee, #4cc9f0);
-            --transition: all 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+            --ig-bg: #000000;
+            --ig-card: #000000;
+            --ig-border: #262626;
+            --ig-text: #ffffff;
+            --ig-text-dim: #a8a8a8;
+            --ig-link: #0095f6;
+            --ig-gradient: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2397 75%, #ad38e7 100%);
+            --transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
-            font-family: 'Inter', sans-serif;
-            background: var(--bg);
-            color: var(--text);
-            overflow: hidden;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background: var(--ig-bg);
+            color: var(--ig-text);
+            overflow-x: hidden;
+            display: flex;
+            justify-content: center;
+        }
+
+        /* Sidebar Navigation */
+        .sidebar {
+            width: 245px;
             height: 100vh;
-            width: 100vw;
+            border-right: 1px solid var(--ig-border);
+            position: fixed;
+            left: 0;
+            top: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
         }
 
-        h1, h2, h3, .title-font { font-family: 'Outfit', sans-serif; }
-
-        .progress-container {
-            position: fixed; top: 0; left: 0; width: 100%; height: 4px;
-            background: rgba(255,255,255,0.05); z-index: 1000;
-        }
-        .progress-bar {
-            height: 100%; background: var(--gradient); width: 0%;
-            transition: width 0.3s ease; box-shadow: 0 0 15px var(--primary);
-        }
-
-        .slides-wrapper {
-            position: relative; width: 100%; height: 100%;
-            display: flex; transition: var(--transition);
-        }
-
-        .slide {
-            flex: 0 0 100%; height: 100%;
-            display: flex; flex-direction: column;
-            justify-content: center; align-items: center;
-            padding: 60px 80px; position: relative;
-            opacity: 0.2; transform: scale(0.95);
-            filter: blur(10px);
-            transition: var(--transition);
-        }
-
-        .slide.active {
-            opacity: 1; transform: scale(1);
-            filter: blur(0);
-        }
-
-        /* Background effects */
-        .slide-bg {
-            position: absolute; inset: 0; z-index: -1;
-            background-size: cover; background-position: center;
-            opacity: 0.15; filter: grayscale(50%) brightness(0.5);
-        }
-
-        .gradient-sphere {
-            position: absolute; width: 600px; height: 600px;
-            border-radius: 50%; background: radial-gradient(circle, var(--primary-dark) 0%, transparent 70%);
-            filter: blur(100px); opacity: 0.1; z-index: -2;
-        }
-
-        /* Content elements */
-        .glass-card {
-            background: var(--card-bg);
-            border: 1px solid var(--border);
-            backdrop-filter: blur(12px);
-            border-radius: 24px;
-            padding: 40px;
-            width: 100%;
-            max-width: 1000px;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.3);
-        }
-
-        .badge {
-            background: rgba(76, 201, 240, 0.1);
-            color: var(--primary);
-            padding: 6px 16px;
-            border-radius: 100px;
-            font-size: 0.8rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 2px;
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 800;
+            font-style: italic;
+            background: var(--ig-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
             margin-bottom: 20px;
-            border: 1px solid rgba(76, 201, 240, 0.2);
-            display: inline-block;
         }
 
-        .main-title {
-            font-size: 4.5rem; font-weight: 900; line-height: 1.1;
-            margin-bottom: 20px; text-align: center;
-            background: linear-gradient(to right, #fff, #999);
-            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.2s;
+            font-weight: 500;
         }
 
-        .section-title {
-            font-size: 3rem; font-weight: 800; margin-bottom: 20px;
-            background: var(--gradient);
-            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        .nav-item:hover { background: rgba(255, 255, 255, 0.1); }
+        .nav-item.active { font-weight: 700; }
+
+        .nav-icon { width: 24px; height: 24px; border: 2px solid var(--ig-text); border-radius: 4px; }
+
+        /* Main Content area */
+        .main-container {
+            margin-left: 245px;
+            width: 100%;
+            max-width: 630px;
+            padding: 40px 20px;
         }
 
-        .subtitle { font-size: 1.2rem; color: var(--text-dim); text-align: center; margin-bottom: 40px; }
+        /* Stories */
+        .stories-container {
+            display: flex;
+            gap: 15px;
+            overflow-x: auto;
+            padding-bottom: 20px;
+            margin-bottom: 30px;
+            scrollbar-width: none;
+        }
+        .stories-container::-webkit-scrollbar { display: none; }
 
-        .author-grid {
-            display: grid; grid-template-columns: repeat(2, 1fr); gap: 30px;
-            margin-top: 40px; width: 100%; max-width: 600px;
+        .story {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            min-width: 70px;
         }
-        .author-card {
-            text-align: center; padding: 20px; border-radius: 16px;
-            background: rgba(255,255,255,0.02); border: 1px solid var(--border);
-        }
-        .author-name { font-weight: 700; color: #fff; }
-        .author-role { font-size: 0.8rem; color: var(--primary); margin-top: 4px; }
 
-        /* Grid layouts */
-        .info-grid {
-            display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 24px; width: 100%; margin-top: 30px;
+        .story-circle {
+            width: 66px;
+            height: 66px;
+            border-radius: 50%;
+            padding: 3px;
+            background: var(--ig-gradient);
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
-        .stat-card {
-            background: rgba(255,255,255,0.03); border: 1px solid var(--border);
-            padding: 30px; border-radius: 20px; position: relative; overflow: hidden;
-            transition: transform 0.3s ease;
-        }
-        .stat-card:hover { transform: translateY(-5px); border-color: var(--primary); }
-        .stat-val { font-size: 2.5rem; font-weight: 900; color: var(--primary); margin-bottom: 8px; }
-        .stat-label { font-size: 0.9rem; color: var(--text-dim); text-transform: uppercase; letter-spacing: 1px; }
 
-        .list-item {
-            display: flex; align-items: flex-start; gap: 15px; margin-bottom: 18px;
-            padding: 15px; border-radius: 12px; background: rgba(255,255,255,0.02);
-            border-left: 4px solid var(--primary);
+        .story-inner {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: #000;
+            border: 2px solid #000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 0.8rem;
         }
-        .list-icon { color: var(--primary); font-size: 1.2rem; margin-top: 2px; }
 
-        /* Figures */
-        .fig-grid {
-            display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 40px; width: 100%; align-items: start;
+        .story-label { font-size: 0.75rem; color: var(--ig-text); max-width: 70px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+        /* Posts (Slides) */
+        .post {
+            background: var(--ig-card);
+            border: 1px solid var(--ig-border);
+            border-radius: 8px;
+            margin-bottom: 25px;
+            width: 100%;
         }
-        .fig-container { 
-            display: flex; flex-direction: column; align-items: center; text-align: center; 
+
+        .post-header {
+            padding: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
         }
-        .fig-img-wrapper {
-            width: 100%; height: 350px; display: flex; align-items: center; justify-content: center;
-            background: #fff; border-radius: 16px; border: 1px solid var(--border);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5); margin-bottom: 16px;
+
+        .user-info { display: flex; align-items: center; gap: 10px; }
+        .user-avatar { width: 32px; height: 32px; border-radius: 50%; background: var(--ig-gradient); display: flex; align-items: center; justify-content: center; font-size: 0.7rem; font-weight: 800; }
+        .username { font-size: 0.85rem; font-weight: 600; }
+        .post-type { font-size: 0.75rem; color: var(--ig-text-dim); }
+
+        .post-content {
+            width: 100%;
+            min-height: 400px;
+            background: #050505;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
             overflow: hidden;
-        }
-        .fig-container img {
-            max-width: 100%; max-height: 100%; object-fit: contain;
-        }
-        .fig-caption { font-size: 0.85rem; color: var(--text-dim); font-style: italic; opacity: 0.8; }
-
-        /* Navigation */
-        .controls {
-            position: fixed; bottom: 40px; right: 40px;
-            display: flex; gap: 15px; z-index: 1000;
-        }
-        .nav-btn {
-            width: 60px; height: 60px; border-radius: 50%;
-            background: rgba(255,255,255,0.05); border: 1px solid var(--border);
-            color: #fff; cursor: pointer; display: flex; align-items: center; justify-content: center;
-            transition: all 0.3s ease; backdrop-filter: blur(10px);
-        }
-        .nav-btn:hover { background: var(--primary); border-color: var(--primary); transform: scale(1.1); }
-        .nav-btn:disabled { opacity: 0.3; cursor: not-allowed; }
-
-        .slide-number {
-            position: fixed; bottom: 40px; left: 40px;
-            font-family: 'Outfit'; font-size: 1.2rem; font-weight: 600;
-            color: var(--text-dim); opacity: 0.5;
+            border-top: 1px solid var(--ig-border);
+            border-bottom: 1px solid var(--ig-border);
         }
 
-        /* Special Slides */
-        .title-slide { text-align: center; }
-        .deploy-image {
-            max-width: 500px; margin: 20px auto; border-radius: 24px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+        .post-content img { width: 100%; height: 100%; object-fit: contain; }
+
+        .post-text-content {
+            padding: 40px;
+            text-align: left;
+            width: 100%;
         }
 
-        /* Animations */
-        @keyframes float {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
-        }
-        .float { animation: float 4s ease-in-out infinite; }
+        .post-title { font-size: 1.5rem; font-weight: 800; margin-bottom: 15px; background: var(--ig-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .post-desc { font-size: 0.95rem; line-height: 1.6; color: var(--ig-text); }
 
-        /* Responsive */
+        .post-footer { padding: 14px; }
+        .post-actions { display: flex; gap: 15px; margin-bottom: 12px; font-size: 1.2rem; }
+        .post-stats { font-size: 0.85rem; font-weight: 600; margin-bottom: 8px; }
+        .post-caption { font-size: 0.85rem; line-height: 1.5; }
+        .post-caption b { cursor: pointer; }
+        .post-time { font-size: 0.65rem; color: var(--ig-text-dim); text-transform: uppercase; margin-top: 8px; letter-spacing: 0.5px; }
+
+        /* Stats Grid for IG */
+        .stat-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-top: 15px; }
+        .stat-pill { background: #121212; padding: 15px; border-radius: 8px; border: 1px solid var(--ig-border); }
+        .stat-num { font-size: 1.4rem; font-weight: 800; color: var(--ig-link); }
+        .stat-label { font-size: 0.7rem; color: var(--ig-text-dim); text-transform: uppercase; }
+
+        /* Mobile specific */
         @media (max-width: 768px) {
-            .slide { padding: 40px 20px; }
-            .main-title { font-size: 2.5rem; }
-            .section-title { font-size: 2rem; }
-            .glass-card { padding: 25px; }
+            .sidebar { display: none; }
+            .main-container { margin-left: 0; padding-top: 20px; }
         }
     </style>
 </head>
 <body>
 
-    <div class="progress-container">
-        <div class="progress-bar" id="progressBar"></div>
+    <div class="sidebar">
+        <div class="logo">DrowsyDetect</div>
+        <div class="nav-item active">Home</div>
+        <div class="nav-item">Search</div>
+        <div class="nav-item">Explore</div>
+        <div class="nav-item">Reels</div>
+        <div class="nav-item">Messages</div>
+        <div class="nav-item">Notifications</div>
+        <div class="nav-item">Create</div>
+        <div class="nav-item">Profile</div>
     </div>
 
-    <div class="slide-number" id="slideNumber">01 / 13</div>
-
-    <div class="slides-wrapper" id="slidesWrapper">
-
-        <!-- SLIDE 1: TITLE -->
-        <div class="slide active title-slide">
-            <div class="slide-bg" style="background-image: url('assets/hero.png'); opacity: 0.3;"></div>
-            <div class="gradient-sphere" style="top: 20%; left: 20%;"></div>
-            <div class="badge">MSU-IIT • RESEARCH PROJECT PRESENTATION</div>
-            <h1 class="main-title">Real-Time Driver<br>Drowsiness Detection</h1>
-            <p class="subtitle">Utilizing YOLOv11n for Embedded Computer Vision Systems</p>
-            <div class="author-grid">
-                <div class="author-card">
-                    <p class="author-name">Crischan Larita</p>
-                    <p class="author-role">Primary Researcher</p>
-                </div>
-                <div class="author-card">
-                    <p class="author-name">Ike Russel</p>
-                    <p class="author-role">Technical Lead</p>
-                </div>
+    <div class="main-container">
+        <!-- STORIES (Slide Nav) -->
+        <div class="stories-container">
+            <div class="story" onclick="scrollToPost('intro')">
+                <div class="story-circle"><div class="story-inner">INTRO</div></div>
+                <div class="story-label">Introduction</div>
+            </div>
+            <div class="story" onclick="scrollToPost('problem')">
+                <div class="story-circle"><div class="story-inner">PROB</div></div>
+                <div class="story-label">The Problem</div>
+            </div>
+            <div class="story" onclick="scrollToPost('method')">
+                <div class="story-circle"><div class="story-inner">TECH</div></div>
+                <div class="story-label">Methodology</div>
+            </div>
+            <div class="story" onclick="scrollToPost('results')">
+                <div class="story-circle"><div class="story-inner">DATA</div></div>
+                <div class="story-label">Results</div>
+            </div>
+            <div class="story" onclick="scrollToPost('deploy')">
+                <div class="story-circle"><div class="story-inner">EDGE</div></div>
+                <div class="story-label">Deployment</div>
+            </div>
+            <div class="story" onclick="scrollToPost('findings')">
+                <div class="story-circle"><div class="story-inner">LIMIT</div></div>
+                <div class="story-label">Findings</div>
             </div>
         </div>
 
-        <!-- SLIDE 2: ABSTRACT -->
-        <div class="slide">
-            <div class="glass-card">
-                <div class="badge">Overview</div>
-                <h2 class="section-title">Introduction</h2>
-                <p style="line-height: 1.8; font-size: 1.1rem; color: #ccc;">
-                    Road safety remains a paramount concern as driver fatigue continues to be a leading cause of global vehicular accidents. This research explores the development of an intelligent monitoring system that leverages <strong>YOLOv11 nano</strong> and <strong>Edge AI</strong> to detect drowsiness in real-time. By prioritizing non-intrusive behavioral analysis, this project aims to provide a proactive safety mechanism that operates efficiently within the hardware constraints of modern in-cabin environments.
-                </p>
-                <div class="info-grid">
-                    <div class="stat-card">
-                        <div class="stat-val">95.5%</div>
-                        <div class="stat-label">Model Accuracy</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-val">Edge</div>
-                        <div class="stat-label">Deployment Target</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-val">Real-Time</div>
-                        <div class="stat-label">Latency Status</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- SLIDE 3: PROBLEM STATEMENT -->
-        <div class="slide">
-            <div class="glass-card">
-                <div class="badge">Context</div>
-                <h2 class="section-title">The Problem</h2>
-                <div class="list-item">
-                    <span class="list-icon">⚠️</span>
+        <!-- POST 1: TITLE/INTRO -->
+        <div class="post" id="intro">
+            <div class="post-header">
+                <div class="user-info">
+                    <div class="user-avatar">CL</div>
                     <div>
-                        <p style="font-weight: 600; color: #fff;">Fatal Road Accidents</p>
-                        <p style="color: var(--text-dim); font-size: 0.9rem;">Fatigue contributes to a significant percentage of worldwide vehicular fatalities.</p>
+                        <div class="username">crischan_larita</div>
+                        <div class="post-type">Mindanao, Philippines</div>
                     </div>
                 </div>
-                <div class="list-item">
-                    <span class="list-icon">🧪</span>
+                <div style="font-weight: bold;">...</div>
+            </div>
+            <div class="post-content">
+                <img src="assets/hero.png" alt="Hero">
+                <div style="position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,0.8), transparent); display: flex; flex-direction: column; justify-content: flex-end; padding: 20px;">
+                    <h1 style="font-size: 2rem; font-weight: 900;">Drowsiness Detection</h1>
+                    <p style="font-size: 0.9rem; opacity: 0.8;">Machine Learning Research Project</p>
+                </div>
+            </div>
+            <div class="post-footer">
+                <div class="post-actions">❤️ 💬 🚀 <span style="margin-left: auto;">🔖</span></div>
+                <div class="post-stats">95,496 likes</div>
+                <div class="post-caption">
+                    <b>crischan_larita</b> Road safety remains a paramount concern. This research explores intelligent monitoring using <b>#YOLOv11</b> and <b>#EdgeAI</b> to detect fatigue in real-time. 
+                </div>
+                <div class="post-time">2 hours ago</div>
+            </div>
+        </div>
+
+        <!-- POST 2: PROBLEM -->
+        <div class="post" id="problem">
+            <div class="post-header">
+                <div class="user-info">
+                    <div class="user-avatar">IR</div>
                     <div>
-                        <p style="font-weight: 600; color: #fff;">Intrusive Sensors</p>
-                        <p style="color: var(--text-dim); font-size: 0.9rem;">Traditional physiological monitoring (EEG/Heart rate) is impractical for daily commutes.</p>
-                    </div>
-                </div>
-                <div class="list-item">
-                    <span class="list-icon">📉</span>
-                    <div>
-                        <p style="font-weight: 600; color: #fff;">Computational Limits</p>
-                        <p style="color: var(--text-dim); font-size: 0.9rem;">Existing AI solutions often require high-end GPUs, making them unsuited for in-car integration.</p>
+                        <div class="username">ike_russel</div>
+                        <div class="post-type">Research Context</div>
                     </div>
                 </div>
             </div>
-        </div>
-
-        <!-- SLIDE 4: SIGNIFICANCE -->
-        <div class="slide">
-            <div class="glass-card">
-                <div class="badge">Impact</div>
-                <h2 class="section-title">Significance of the Study</h2>
-                <div class="info-grid">
-                    <div class="stat-card">
-                        <p style="font-weight: 700; color: var(--primary); margin-bottom: 10px;">Road Safety Improvement</p>
-                        <p style="font-size: 0.85rem; color: var(--text-dim);">Provides a low-cost, non-intrusive alternative to prevent accidents caused by human fatigue.</p>
-                    </div>
-                    <div class="stat-card">
-                        <p style="font-weight: 700; color: var(--primary); margin-bottom: 10px;">Edge AI Advancement</p>
-                        <p style="font-size: 0.85rem; color: var(--text-dim);">Demonstrates the feasibility and limits of deploying state-of-the-art YOLOv11 models on microcomputers.</p>
-                    </div>
-                    <div class="stat-card">
-                        <p style="font-weight: 700; color: var(--primary); margin-bottom: 10px;">Scalable Solutions</p>
-                        <p style="font-size: 0.85rem; color: var(--text-dim);">Offers a blueprint for integrating computer vision into existing vehicle infrastructure without massive hardware overhead.</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- SLIDE 4: OBJECTIVES -->
-        <div class="slide">
-            <div class="glass-card">
-                <div class="badge">Goals</div>
-                <h2 class="section-title">Project Objectives</h2>
-                <ul style="list-style: none;">
-                    <li class="list-item"><span class="list-icon">🎯</span>To develop a high-precision eye-state classification model using YOLOv11.</li>
-                    <li class="list-item"><span class="list-icon">🎯</span>To curate and pre-process a dataset specifically for driver facial features.</li>
-                    <li class="list-item"><span class="list-icon">🎯</span>To optimize the model for low-latency inference on ARM-based edge hardware.</li>
-                    <li class="list-item"><span class="list-icon">🎯</span>To validate system performance in real-time, non-intrusive environments.</li>
-                </ul>
-            </div>
-        </div>
-
-        <!-- SLIDE 5: METHODOLOGY -->
-        <div class="slide">
-            <div class="glass-card">
-                <div class="badge">Architecture</div>
-                <h2 class="section-title">System Methodology</h2>
-                <div style="display: flex; gap: 40px; align-items: center; margin-top: 20px;">
-                    <div style="flex: 1;">
-                        <div class="stat-card" style="margin-bottom: 15px; padding: 20px;">
-                            <p style="font-weight: 700; color: var(--primary);">1. Data Pipeline</p>
-                            <p style="font-size: 0.8rem; color: var(--text-dim);">Augmentation & Splitting (80/10/10)</p>
-                        </div>
-                        <div class="stat-card" style="margin-bottom: 15px; padding: 20px;">
-                            <p style="font-weight: 700; color: var(--primary);">2. Model Training</p>
-                            <p style="font-size: 0.8rem; color: var(--text-dim);">Fine-tuning YOLOv11n on Custom Classes</p>
-                        </div>
-                        <div class="stat-card" style="padding: 20px;">
-                            <p style="font-weight: 700; color: var(--primary);">3. Optimization</p>
-                            <p style="font-size: 0.8rem; color: var(--text-dim);">Weight Export (best.pt) to Edge Environment</p>
-                        </div>
-                    </div>
-                    <div style="flex: 1.2; background: rgba(0,0,0,0.2); border-radius: 16px; padding: 30px; border: 1px dashed var(--border);">
-                        <p style="text-align: center; color: var(--primary); font-weight: 800; font-size: 1.2rem; margin-bottom: 20px;">YOLOv11 Nano Core</p>
-                        <div style="display: flex; justify-content: space-between; position: relative;">
-                            <div style="width: 60px; height: 60px; background: var(--secondary); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 0.7rem;">INPUT</div>
-                            <div style="width: 60px; height: 60px; background: var(--primary-dark); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 0.7rem;">BACKBONE</div>
-                            <div style="width: 60px; height: 60px; background: var(--accent); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 0.7rem;">HEAD</div>
-                        </div>
-                        <p style="margin-top: 20px; font-size: 0.8rem; text-align: center; color: var(--text-dim);">Optimized for Apple Silicon & Raspberry Pi</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- SLIDE 6: DATA SETUP -->
-        <div class="slide">
-            <div class="glass-card">
-                <div class="badge">Dataset</div>
-                <h2 class="section-title">Data Collection & Split</h2>
-                <div class="info-grid">
-                    <div class="stat-card">
-                        <div class="stat-val">1,419</div>
-                        <div class="stat-label">Total Images</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-val">2</div>
-                        <div class="stat-label">Classes (Open/Closed)</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-val">80/20</div>
-                        <div class="stat-label">Train/Val Ratio</div>
-                    </div>
-                </div>
-                <p style="margin-top: 30px; color: var(--text-dim);">
-                    Data sourced from <strong>Roboflow Universe</strong>. All images were normalized to 640x640 resolution. 
-                    Classes represent binary alertness states: <span style="color: var(--primary);">Open (Alert)</span> and <span style="color: var(--accent);">Closed (Drowsy)</span>.
-                </p>
-            </div>
-        </div>
-
-        <!-- SLIDE 7: TRAINING DETAILS -->
-        <div class="slide">
-            <div class="glass-card">
-                <div class="badge">Training</div>
-                <h2 class="section-title">Hyperparameters</h2>
-                <div class="info-grid">
-                    <div class="stat-card">
-                        <p class="stat-label">Model Type</p>
-                        <p class="stat-val" style="font-size: 1.8rem;">YOLO11n</p>
-                    </div>
-                    <div class="stat-card">
-                        <p class="stat-label">Epochs</p>
-                        <p class="stat-val" style="font-size: 1.8rem;">50</p>
-                    </div>
-                    <div class="stat-card">
-                        <p class="stat-label">Batch Size</p>
-                        <p class="stat-val" style="font-size: 1.8rem;">16</p>
-                    </div>
-                    <div class="stat-card">
-                        <p class="stat-label">Image Size</p>
-                        <p class="stat-val" style="font-size: 1.8rem;">640px</p>
-                    </div>
-                    <div class="stat-card">
-                        <p class="stat-label">Hardware</p>
-                        <p class="stat-val" style="font-size: 1.8rem;">Apple MPS</p>
-                    </div>
-                    <div class="stat-card">
-                        <p class="stat-label">Framework</p>
-                        <p class="stat-val" style="font-size: 1.8rem;">Ultralytics</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- SLIDE 8: PERFORMANCE RESULTS -->
-        <div class="slide">
-            <div class="glass-card">
-                <div class="badge">Performance</div>
-                <h2 class="section-title">Quantitative Results</h2>
-                <div class="info-grid" style="grid-template-columns: repeat(2, 1fr);">
-                    <div class="stat-card" style="border-bottom: 4px solid var(--primary);">
-                        <p class="stat-label">mAP @ 50</p>
-                        <p class="stat-val">95.49%</p>
-                    </div>
-                    <div class="stat-card" style="border-bottom: 4px solid var(--accent);">
-                        <p class="stat-label">Recall</p>
-                        <p class="stat-val">93.54%</p>
-                    </div>
-                    <div class="stat-card" style="border-bottom: 4px solid var(--secondary);">
-                        <p class="stat-label">Precision</p>
-                        <p class="stat-val">89.94%</p>
-                    </div>
-                    <div class="stat-card" style="border-bottom: 4px solid #fff;">
-                        <p class="stat-label">mAP @ 50-95</p>
-                        <p class="stat-val">62.53%</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- SLIDE 9: FIGURES (Confusion Matrix) -->
-        <div class="slide">
-            <div class="glass-card">
-                <div class="badge">Evaluation</div>
-                <h2 class="section-title">Confusion Matrix & PR Curve</h2>
-                <div class="fig-grid">
-                    <div class="fig-container">
-                        <div class="fig-img-wrapper">
-                            <img src="figures_for_overleaf/confusion_matrix_normalized.png" alt="Confusion Matrix">
-                        </div>
-                        <p class="fig-caption">Fig 1. Normalized Confusion Matrix</p>
-                    </div>
-                    <div class="fig-container">
-                        <div class="fig-img-wrapper">
-                            <img src="figures_for_overleaf/BoxPR_curve.png" alt="PR Curve">
-                        </div>
-                        <p class="fig-caption">Fig 2. Precision-Recall Curve</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- SLIDE 10: TRAINING CURVES -->
-        <div class="slide">
-            <div class="glass-card">
-                <div class="badge">Analysis</div>
-                <h2 class="section-title">Training Convergence</h2>
-                <div class="fig-container">
-                    <div class="fig-img-wrapper" style="height: 450px;">
-                        <img src="figures_for_overleaf/results.png" alt="Training Results">
-                    </div>
-                    <p class="fig-caption">Fig 3. Training/Validation Loss and Metric Progression</p>
-                </div>
-            </div>
-        </div>
-
-        <!-- SLIDE 11: PREDICTIONS PREVIEW -->
-        <div class="slide">
-            <div class="glass-card">
-                <div class="badge">Visuals</div>
-                <h2 class="section-title">Sample Detections</h2>
-                <div class="fig-container">
-                    <div class="fig-img-wrapper" style="height: 450px;">
-                        <img src="figures_for_overleaf/val_batch0_pred.jpg" alt="Sample Predictions">
-                    </div>
-                    <p class="fig-caption">Fig 4. Validation Batch Predictions (Eye State Localization)</p>
-                </div>
-            </div>
-        </div>
-
-        <!-- SLIDE 12: EDGE IMPLEMENTATION -->
-        <div class="slide">
-            <div class="glass-card">
-                <div class="badge">Deployment</div>
-                <h2 class="section-title">Raspberry Pi Integration</h2>
-                <div style="display: flex; gap: 40px; align-items: center;">
-                    <div style="flex: 1;">
-                        <img src="assets/rpi.png" alt="Raspberry Pi" class="deploy-image float">
-                    </div>
-                    <div style="flex: 1;">
-                        <ul style="list-style: none;">
-                            <li class="list-item"><span class="list-icon">🍓</span><strong>Hardware:</strong> Raspberry Pi 5 / 4B</li>
-                            <li class="list-item"><span class="list-icon">⚠️</span><strong>Performance Finding:</strong> The device struggles with real-time throughput (~3-5 FPS).</li>
-                            <li class="list-item"><span class="list-icon">⚙️</span><strong>Constraint:</strong> High CPU utilization causes noticeable detection latency.</li>
-                            <li class="list-item"><span class="list-icon">💡</span><strong>Recommendation:</strong> Use an <strong>AI HAT</strong> (e.g., Raspberry Pi AI Kit with Hailo-8L) for hardware acceleration.</li>
-                        </ul>
-                        <p style="margin-top: 20px; font-size: 0.9rem; color: var(--text-dim);">
-                            The model achieves smooth frame rates on edge hardware by leveraging the YOLOv11 nano architecture's efficiency.
-                        </p>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- SLIDE 13: CONCLUSION -->
-        <div class="slide">
-            <div class="glass-card">
-                <div class="badge">Summary</div>
-                <h2 class="section-title">Conclusion & Future Work</h2>
-                <div style="text-align: left; margin-top: 20px;">
-                    <p style="margin-bottom: 15px;">✅ <strong>YOLOv11n</strong> provides superior detection accuracy but high computational demand.</p>
-                    <p style="margin-bottom: 15px;">❌ <strong>Hardware Limitation:</strong> Standalone Raspberry Pi exhibits low FPS, hindering real-world deployment.</p>
-                    <p style="margin-bottom: 15px;">🔭 <strong>Future Work:</strong> Integration of an <strong>AI HAT</strong> or <strong>Hailo-8L NPU</strong> to achieve 30+ FPS real-time performance.</p>
-                </div>
-            </div>
-        </div>
-
-        <!-- SLIDE 14: REFERENCES -->
-        <div class="slide">
-            <div class="glass-card">
-                <div class="badge">Bibliography</div>
-                <h2 class="section-title">Selected References</h2>
-                <div style="text-align: left; font-size: 0.9rem; color: var(--text-dim);">
-                    <p style="margin-bottom: 20px;">[1] Ultralytics, "Ultralytics YOLOv11," 2024. [Online]. Available: https://github.com/ultralytics/ultralytics</p>
-                    <p style="margin-bottom: 20px;">[2] J. Redmon, S. Divvala, R. Girshick, and A. Farhadi, "You Only Look Once: Unified, Real-Time Object Detection," in CVPR, 2016, pp. 779-788.</p>
-                    <p style="margin-bottom: 20px;">[3] Roboflow Universe, "Driver Facial State Dataset," 2024. [Online]. Available: https://universe.roboflow.com</p>
-                </div>
-            </div>
-        </div>
-
-        <!-- SLIDE 15: Q&A -->
-        <div class="slide title-slide">
-            <div class="gradient-sphere" style="bottom: 20%; right: 20%;"></div>
-            <div class="glass-card" style="margin: 0 auto;">
-                <h2 class="section-title">Thank You</h2>
-                <p style="color: var(--primary); font-size: 1.2rem; margin-top: 10px;">Questions or Technical Inquiries?</p>
-                <div style="margin-top: 40px; border-top: 1px solid var(--border); padding-top: 30px;">
-                    <p style="font-size: 0.9rem; color: #fff;">Crischan Larita | Ike Russel</p>
-                    <p style="font-size: 0.8rem; color: var(--text-dim); margin-top: 10px;">
-                        Department of Computer Applications<br>
-                        Mindanao State University - Iligan Institute of Technology
+            <div class="post-content">
+                <div class="post-text-content">
+                    <h2 class="post-title">The Problem</h2>
+                    <p class="post-desc">
+                        Driver fatigue is a leading cause of fatal traffic accidents. 
+                        Traditional sensors are intrusive, while modern AI often requires heavy GPUs. 
+                        We need a non-intrusive, low-power solution.
                     </p>
                 </div>
             </div>
+            <div class="post-footer">
+                <div class="post-actions">❤️ 💬 🚀</div>
+                <div class="post-caption">
+                    <b>ike_russel</b> Addressing the computational gap in vehicle safety. <b>#ComputerVision</b> <b>#SafetyFirst</b>
+                </div>
+            </div>
+        </div>
+
+        <!-- POST 3: RESULTS (METRICS) -->
+        <div class="post" id="results">
+            <div class="post-header">
+                <div class="user-info">
+                    <div class="user-avatar">ML</div>
+                    <div>
+                        <div class="username">ml_metrics</div>
+                        <div class="post-type">Quantitative Analysis</div>
+                    </div>
+                </div>
+            </div>
+            <div class="post-content">
+                <div class="post-text-content" style="padding: 20px;">
+                    <h2 class="post-title">System Performance</h2>
+                    <div class="stat-grid">
+                        <div class="stat-pill"><div class="stat-num">95.49%</div><div class="stat-label">mAP @ 50</div></div>
+                        <div class="stat-pill"><div class="stat-num">93.54%</div><div class="stat-label">Recall</div></div>
+                        <div class="stat-pill"><div class="stat-num">89.94%</div><div class="stat-label">Precision</div></div>
+                        <div class="stat-pill"><div class="stat-num">50 Epochs</div><div class="stat-label">Training</div></div>
+                    </div>
+                </div>
+            </div>
+            <div class="post-footer">
+                <div class="post-actions">❤️ 💬 🚀</div>
+                <div class="post-caption">
+                    <b>ml_metrics</b> Exceptional accuracy achieved on the <b>#Roboflow</b> dataset. High recall is critical for safety-first systems.
+                </div>
+            </div>
+        </div>
+
+        <!-- POST 4: FIGURES -->
+        <div class="post">
+            <div class="post-header">
+                <div class="user-info">
+                    <div class="user-avatar">📊</div>
+                    <div>
+                        <div class="username">research_figures</div>
+                    </div>
+                </div>
+            </div>
+            <div class="post-content" style="background: #fff;">
+                <img src="figures_for_overleaf/confusion_matrix_normalized.png" alt="Confusion Matrix">
+            </div>
+            <div class="post-footer">
+                <div class="post-actions">❤️ 💬 🚀</div>
+                <div class="post-caption">
+                    <b>research_figures</b> Analyzing the normalized confusion matrix. <b>#DeepLearning</b> <b>#Matrix</b>
+                </div>
+            </div>
+        </div>
+
+        <!-- POST 5: EDGE FINDINGS -->
+        <div class="post" id="findings">
+            <div class="post-header">
+                <div class="user-info">
+                    <div class="user-avatar">🍓</div>
+                    <div>
+                        <div class="username">raspberry_pi_logs</div>
+                        <div class="post-type">Hardware Limitations</div>
+                    </div>
+                </div>
+            </div>
+            <div class="post-content">
+                <img src="assets/rpi.png" alt="RPI">
+                <div style="position: absolute; inset: 0; background: rgba(0,0,0,0.6); display: flex; flex-direction: column; justify-content: center; padding: 30px;">
+                    <h3 style="color: #ff3b30; margin-bottom: 10px;">⚠️ Key Finding</h3>
+                    <p style="font-size: 1rem; line-height: 1.4;">
+                        Standalone Raspberry Pi struggles with workload (~3-5 FPS). High CPU utilization causes latency.
+                    </p>
+                    <hr style="margin: 15px 0; border: 0; border-top: 1px solid rgba(255,255,255,0.2);">
+                    <p style="font-weight: bold; color: #4cd964;">
+                        💡 Recommendation: Incorporate an AI HAT (Hailo-8L) for 30+ FPS.
+                    </p>
+                </div>
+            </div>
+            <div class="post-footer">
+                <div class="post-actions">❤️ 💬 🚀</div>
+                <div class="post-caption">
+                    <b>raspberry_pi_logs</b> Real-world testing reveals the need for hardware acceleration. <b>#AIHat</b> <b>#HardwareConstraints</b>
+                </div>
+            </div>
         </div>
 
     </div>
 
-    <!-- CONTROLS -->
-    <div class="controls">
-        <button class="nav-btn" id="prevBtn" onclick="moveSlide(-1)" disabled>
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
-        </button>
-        <button class="nav-btn" id="nextBtn" onclick="moveSlide(1)">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
-        </button>
-    </div>
-
     <script>
-        let currentSlide = 0;
-        const slides = document.querySelectorAll('.slide');
-        const wrapper = document.getElementById('slidesWrapper');
-        const progressBar = document.getElementById('progressBar');
-        const slideNumber = document.getElementById('slideNumber');
-        const prevBtn = document.getElementById('prevBtn');
-        const nextBtn = document.getElementById('nextBtn');
-
-        function updateUI() {
-            // Update wrapper position
-            wrapper.style.transform = `translateX(-${currentSlide * 100}%)`;
-            
-            // Update active states
-            slides.forEach((slide, index) => {
-                slide.classList.toggle('active', index === currentSlide);
-            });
-
-            // Update Progress
-            const progress = ((currentSlide + 1) / slides.length) * 100;
-            progressBar.style.width = `${progress}%`;
-
-            // Update Number
-            slideNumber.textContent = `${String(currentSlide + 1).padStart(2, '0')} / ${String(slides.length).padStart(2, '0')}`;
-
-            // Update Buttons
-            prevBtn.disabled = currentSlide === 0;
-            nextBtn.disabled = currentSlide === slides.length - 1;
+        function scrollToPost(id) {
+            document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
         }
-
-        function moveSlide(direction) {
-            currentSlide = Math.max(0, Math.min(slides.length - 1, currentSlide + direction));
-            updateUI();
-        }
-
-        // Keyboard Navigation
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'ArrowRight' || e.key === ' ') moveSlide(1);
-            if (e.key === 'ArrowLeft') moveSlide(-1);
-            if (e.key === 'f') document.documentElement.requestFullscreen();
-        });
-
-        // Initialize
-        updateUI();
     </script>
 </body>
 </html>
