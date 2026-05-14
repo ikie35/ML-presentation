@@ -27,60 +27,73 @@
             height: 100vh;
         }
 
-        /* Sidebar Navigation */
+        /* Compact Sidebar Navigation */
         .sidebar {
-            width: 245px;
+            width: 72px;
             height: 100vh;
             border-right: 1px solid var(--ig-border);
             position: fixed;
             left: 0;
             top: 0;
-            padding: 20px;
+            padding: 20px 10px;
             display: flex;
             flex-direction: column;
-            gap: 30px;
+            align-items: center;
+            gap: 35px;
             z-index: 100;
+            background: var(--ig-bg);
         }
 
         .logo {
-            font-size: 1.5rem;
-            font-weight: 800;
-            font-style: italic;
+            font-size: 1.2rem;
+            font-weight: 900;
             background: var(--ig-gradient);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             margin-bottom: 20px;
+            writing-mode: vertical-lr;
+            transform: rotate(180deg);
         }
 
         .nav-item {
             display: flex;
             align-items: center;
-            gap: 15px;
-            padding: 12px;
+            justify-content: center;
+            width: 44px;
+            height: 44px;
             border-radius: 8px;
             cursor: pointer;
             transition: background 0.2s;
-            font-weight: 500;
+            color: var(--ig-text-dim);
         }
-        .nav-item:hover { background: rgba(255, 255, 255, 0.1); }
-        .nav-item.active { font-weight: 700; }
+        .nav-item span { display: none; } /* Hide labels */
+        .nav-item:hover { background: rgba(255, 255, 255, 0.1); color: #fff; }
+        .nav-item.active { color: #fff; }
 
-        /* Main Slideshow area */
+        .nav-icon-box {
+            width: 20px;
+            height: 20px;
+            border: 2px solid currentColor;
+            border-radius: 4px;
+        }
+
+        /* Expanded Presentation Container */
         .presentation-container {
-            margin-left: 245px;
-            width: calc(100% - 245px);
+            margin-left: 72px;
+            width: calc(100% - 72px);
             height: 100vh;
             display: flex;
             flex-direction: column;
             align-items: center;
             position: relative;
+            padding: 0 40px;
         }
 
-        /* Top Stories Area (Fixed) */
+        /* Top Stories Area (Subtle) */
         .stories-wrapper {
             width: 100%;
-            max-width: 630px;
-            padding: 20px 0;
+            max-width: 900px;
+            padding: 30px 0;
             z-index: 10;
         }
         .stories-container {
@@ -130,14 +143,15 @@
 
         .story-label { font-size: 0.7rem; color: var(--ig-text); max-width: 70px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 
-        /* Slides */
+        /* Slides - Much Bigger */
         .slides-viewport {
             flex: 1;
             width: 100%;
-            max-width: 500px;
+            max-width: 900px;
+            max-height: 80vh;
             position: relative;
             perspective: 1000px;
-            margin-bottom: 20px;
+            margin-bottom: 50px;
         }
 
         .slide {
@@ -198,12 +212,12 @@
         .post-content img { width: 100%; height: 100%; object-fit: contain; }
 
         .post-text-body {
-            padding: 30px;
+            padding: 60px;
             width: 100%;
-            text-align: left;
+            text-align: center;
         }
-        .post-title { font-size: 1.4rem; font-weight: 800; margin-bottom: 12px; background: var(--ig-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        .post-desc { font-size: 0.9rem; line-height: 1.5; color: var(--ig-text); }
+        .post-title { font-size: 2.2rem; font-weight: 800; margin-bottom: 20px; background: var(--ig-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .post-desc { font-size: 1.2rem; line-height: 1.6; color: var(--ig-text); max-width: 700px; margin: 0 auto; }
 
         .post-footer { padding: 12px; }
         .post-actions { display: flex; gap: 14px; margin-bottom: 8px; font-size: 1.1rem; }
@@ -228,15 +242,14 @@
 <body>
 
     <div class="sidebar">
-        <div class="logo">DrowsyDetect</div>
-        <div class="nav-item active">Home</div>
-        <div class="nav-item">Search</div>
-        <div class="nav-item">Explore</div>
-        <div class="nav-item">Reels</div>
-        <div class="nav-item">Messages</div>
-        <div class="nav-item">Notifications</div>
-        <div class="nav-item">Create</div>
-        <div class="nav-item">Profile</div>
+        <div class="logo">DD</div>
+        <div class="nav-item active"><div class="nav-icon-box"></div></div>
+        <div class="nav-item"><div class="nav-icon-box"></div></div>
+        <div class="nav-item"><div class="nav-icon-box"></div></div>
+        <div class="nav-item"><div class="nav-icon-box"></div></div>
+        <div class="nav-item"><div class="nav-icon-box"></div></div>
+        <div class="nav-item"><div class="nav-icon-box"></div></div>
+        <div class="nav-item"><div class="nav-icon-box"></div></div>
     </div>
 
     <div class="presentation-container">
