@@ -1,0 +1,27 @@
+# Python
+__pycache__/
+.venv/
+*.py[cod]
+*$py.class
+
+# Environment
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# Machine Learning
+runs/
+*.pt
+*.onnx
+*.engine
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Presentation Assets
+# (Keep assets/ and figures_for_overleaf/ as they are needed for the presentation)

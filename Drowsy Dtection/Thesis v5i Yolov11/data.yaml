@@ -1,0 +1,13 @@
+train: /Users/crischanlarita/Documents/Thesis/Drowsy Dtection/Thesis v5i Yolov11/train/images
+val: /Users/crischanlarita/Documents/Thesis/Drowsy Dtection/Thesis v5i Yolov11/valid/images
+test: /Users/crischanlarita/Documents/Thesis/Drowsy Dtection/Thesis v5i Yolov11/test/images
+
+nc: 2
+names: ['close', 'open']
+
+roboflow:
+  workspace: garrino
+  project: thesis-1-5gruu
+  version: 5
+  license: CC BY 4.0
+  url: https://universe.roboflow.com/garrino/thesis-1-5gruu/dataset/5

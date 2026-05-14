@@ -1,0 +1,108 @@
+\documentclass[conference]{IEEEtran}
+\usepackage{cite}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{algorithmic}
+\usepackage{graphicx}
+\usepackage{textcomp}
+\usepackage{xcolor}
+\usepackage{hyperref}
+
+\begin{document}
+
+\title{Real-Time Driver Drowsiness Detection using YOLOv11}
+
+\author{\IEEEauthorblockN{1\textsuperscript{st} Crischan Larita}
+\IEEEauthorblockA{\textit{Department of Computer Applications} \\
+\textit{Mindanao State University - Iligan Institute of Technology}\\
+Iligan City, Philippines \\
+crischan.larita@g.msuiit.edu.ph}
+\and
+\IEEEauthorblockN{2\textsuperscript{nd} Ike Russel}
+\IEEEauthorblockA{\textit{Department of Computer Applications} \\
+\textit{Mindanao State University - Iligan Institute of Technology}\\
+Iligan City, Philippines \\
+ike.russel@g.msuiit.edu.ph}
+}
+
+\maketitle
+
+\begin{abstract}
+Driver drowsiness is a major cause of traffic accidents globally, making real-time monitoring systems crucial for road safety. In this paper, we present a robust driver drowsiness detection system utilizing the newly released YOLOv11 nano (YOLOv11n) object detection model. The model was trained for 50 epochs using a specialized dataset of driver facial states. Our results demonstrate high efficacy, with the model achieving a mean Average Precision (mAP@50) of 95.49\%, a precision of 89.94\%, and a recall of 93.54\%. The implemented system is capable of performing real-time inference on edge devices, making it a viable and efficient solution for preventing drowsiness-related vehicular accidents.
+\end{abstract}
+
+\begin{IEEEkeywords}
+Driver Drowsiness Detection, YOLOv11, Computer Vision, Real-Time Object Detection, Machine Learning
+\end{IEEEkeywords}
+
+\section{Introduction}
+Fatigue and driver drowsiness significantly impair cognitive abilities and reaction times, contributing to a large percentage of fatal road accidents worldwide. Developing an intelligent, non-intrusive system to monitor driver alertness in real time is a critical step toward enhancing vehicular safety. 
+
+Traditional approaches to drowsiness detection often rely on physiological sensors, which can be intrusive and impractical for everyday driving. Conversely, computer vision-based techniques analyze behavioral indicators such as eye closure duration, yawning, and head posture. Recent advancements in deep learning, particularly the \textit{You Only Look Once} (YOLO) family of algorithms, have demonstrated exceptional speed and accuracy in object detection tasks. This study implements YOLOv11 nano, the latest iteration in the YOLO series, to develop an efficient and accurate drowsiness detection system.
+
+\section{Methodology}
+
+\subsection{System Architecture}
+The core of the detection system is powered by the YOLOv11n architecture, chosen for its optimal balance between computational efficiency and detection accuracy. This makes it particularly suited for real-time applications running on edge devices or standard laptops without requiring high-end GPUs.
+
+\subsection{Dataset and Environment Setup}
+The model was trained on a custom dataset sourced from Roboflow Universe (Version 5). The dataset comprises a total of 1,419 images annotated for driver facial features, specifically focusing on eye states. It is categorized into two distinct classes: \textit{open} (eyes open) and \textit{close} (eyes closed), representing the driver's level of alertness. The dataset was split into 1,137 images for training, 142 images for validation, and 140 images for testing. Training was conducted using the Ultralytics framework. The hardware environment utilized Apple Silicon (MPS backend) for accelerated deep learning computations.
+
+\subsection{Training Hyperparameters}
+The model was initialized with pre-trained weights (\texttt{yolo11n.pt}) and fine-tuned on the custom dataset for 50 epochs. The input image size was scaled to $640 \times 640$ pixels to ensure uniform feature extraction. A batch size of 16 was employed during the training process. Optimization was handled automatically by the Ultralytics training pipeline, adapting learning rates and momentum for stable convergence.
+
+\subsection{Edge Deployment and Demonstration Setup}
+To validate the system's practical viability, the trained YOLOv11n model was deployed onto a Raspberry Pi microcomputer equipped with a dedicated camera module. This setup simulates a real-world, in-cabin monitoring environment. The system utilizes the OpenCV library to capture continuous video streams and passes the frames to the model for real-time inference. A live demonstration setup was constructed to evaluate the model's latency and detection accuracy directly on edge hardware.
+
+\section{Results and Evaluation}
+The performance of the YOLOv11n model was rigorously evaluated using standard object detection metrics over the validation set.
+
+\subsection{Performance Metrics}
+Upon completion of the 50 training epochs, the model demonstrated excellent generalization and high accuracy. The final validation metrics are summarized below:
+\begin{itemize}
+    \item \textbf{Precision:} 89.94\% (0.89939)
+    \item \textbf{Recall:} 93.54\% (0.93542)
+    \item \textbf{mAP@50:} 95.49\% (0.95486)
+    \item \textbf{mAP@50-95:} 62.53\% (0.62534)
+\end{itemize}
+
+The high mAP@50 score of 95.49\% indicates that the model is highly capable of correctly identifying and localizing features of drowsiness with a 50\% Intersection over Union (IoU) threshold.
+
+\begin{figure}[htbp]
+\centerline{\includegraphics[width=\linewidth]{confusion_matrix_normalized.png}}
+\caption{Normalized confusion matrix of the YOLOv11n model evaluated on the validation set.}
+\label{fig:confusion_matrix}
+\end{figure}
+
+\begin{figure}[htbp]
+\centerline{\includegraphics[width=\linewidth]{BoxPR_curve.png}}
+\caption{Precision-Recall (PR) curve demonstrating the trade-off between precision and recall across different confidence thresholds.}
+\label{fig:pr_curve}
+\end{figure}
+
+\subsection{Loss Convergence}
+The training process showed a steady decline in both bounding box loss and classification loss, indicating healthy convergence without significant overfitting. The final validation bounding box loss was recorded at 1.321, and the classification loss at 0.598.
+
+\begin{figure}[htbp]
+\centerline{\includegraphics[width=\linewidth]{results.png}}
+\caption{Training and validation loss convergence alongside primary performance metrics across 50 epochs.}
+\label{fig:results}
+\end{figure}
+
+\subsection{Real-Time Edge Inference and Demonstration}
+During the live demonstration, the system successfully executed real-time inference directly on the Raspberry Pi. Video frames captured via the connected camera were processed using the optimized best weights (\texttt{best.pt}). The model rendered bounding box annotations and classified eye states seamlessly. Despite the computational constraints of the edge device, the YOLOv11n model maintained a highly responsive frame rate with minimal latency, successfully proving its capability as an embedded alertness monitor.
+
+\begin{figure}[htbp]
+\centerline{\includegraphics[width=\linewidth]{val_batch0_pred.jpg}}
+\caption{Sample detections from the validation set showing predicted bounding boxes, class labels, and confidence scores.}
+\label{fig:predictions}
+\end{figure}
+
+\section{Conclusion}
+This study successfully implemented and demonstrated a real-time driver drowsiness detection system utilizing YOLOv11n. The model achieved a high mAP@50 of 95.49\% and was effectively deployed on a Raspberry Pi with a camera module for edge inference. The live demonstration confirmed the system's capability to process video streams and detect fatigue indicators without relying on high-end GPUs. Future work will focus on integrating the system with an auditory or haptic alarm mechanism to actively alert drivers upon detecting extended periods of drowsiness.
+
+\begin{thebibliography}{00}
+\bibitem{b1} Ultralytics, ``Ultralytics YOLOv11,'' 2024. [Online]. Available: https://github.com/ultralytics/ultralytics.
+\bibitem{b2} J. Redmon, S. Divvala, R. Girshick, and A. Farhadi, ``You Only Look Once: Unified, Real-Time Object Detection,'' in \textit{Proceedings of the IEEE Conference on Computer Vision and Pattern Recognition (CVPR)}, 2016, pp. 779-788.
+\end{thebibliography}
+
+\end{document}
