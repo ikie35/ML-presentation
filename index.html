@@ -511,8 +511,8 @@
                         <ul style="list-style: none;">
                             <li class="list-item"><span class="list-icon">🍓</span><strong>Hardware:</strong> Raspberry Pi 5 / 4B</li>
                             <li class="list-item"><span class="list-icon">⚠️</span><strong>Performance Finding:</strong> The device struggles with real-time throughput (~3-5 FPS).</li>
-                            <li class="list-item"><span class="list-icon">⚙️</span><strong>Constraint:</strong> High CPU/RAM utilization causes noticeable latency in detection.</li>
-                            <li class="list-item"><span class="list-icon">💡</span><strong>Conclusion:</strong> RasPi alone is insufficient for high-speed real-time response without hardware acceleration (NPU/TPU).</li>
+                            <li class="list-item"><span class="list-icon">⚙️</span><strong>Constraint:</strong> High CPU utilization causes noticeable detection latency.</li>
+                            <li class="list-item"><span class="list-icon">💡</span><strong>Recommendation:</strong> Use an <strong>AI HAT</strong> (e.g., Raspberry Pi AI Kit with Hailo-8L) for hardware acceleration.</li>
                         </ul>
                         <p style="margin-top: 20px; font-size: 0.9rem; color: var(--text-dim);">
                             The model achieves smooth frame rates on edge hardware by leveraging the YOLOv11 nano architecture's efficiency.
@@ -530,7 +530,7 @@
                 <div style="text-align: left; margin-top: 20px;">
                     <p style="margin-bottom: 15px;">✅ <strong>YOLOv11n</strong> provides superior detection accuracy but high computational demand.</p>
                     <p style="margin-bottom: 15px;">❌ <strong>Hardware Limitation:</strong> Standalone Raspberry Pi exhibits low FPS, hindering real-world deployment.</p>
-                    <p style="margin-bottom: 15px;">🔭 <strong>Future:</strong> Implementation of TensorRT/OpenVINO or external accelerators (Coral TPU).</p>
+                    <p style="margin-bottom: 15px;">🔭 <strong>Future Work:</strong> Integration of an <strong>AI HAT</strong> or <strong>Hailo-8L NPU</strong> to achieve 30+ FPS real-time performance.</p>
                 </div>
             </div>
         </div>
