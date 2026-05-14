@@ -293,6 +293,28 @@
             </div>
         </div>
 
+        <!-- SLIDE 4: SIGNIFICANCE -->
+        <div class="slide">
+            <div class="glass-card">
+                <div class="badge">Impact</div>
+                <h2 class="section-title">Significance of the Study</h2>
+                <div class="info-grid">
+                    <div class="stat-card">
+                        <p style="font-weight: 700; color: var(--primary); margin-bottom: 10px;">Road Safety Improvement</p>
+                        <p style="font-size: 0.85rem; color: var(--text-dim);">Provides a low-cost, non-intrusive alternative to prevent accidents caused by human fatigue.</p>
+                    </div>
+                    <div class="stat-card">
+                        <p style="font-weight: 700; color: var(--primary); margin-bottom: 10px;">Edge AI Advancement</p>
+                        <p style="font-size: 0.85rem; color: var(--text-dim);">Demonstrates the feasibility and limits of deploying state-of-the-art YOLOv11 models on microcomputers.</p>
+                    </div>
+                    <div class="stat-card">
+                        <p style="font-weight: 700; color: var(--primary); margin-bottom: 10px;">Scalable Solutions</p>
+                        <p style="font-size: 0.85rem; color: var(--text-dim);">Offers a blueprint for integrating computer vision into existing vehicle infrastructure without massive hardware overhead.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <!-- SLIDE 4: OBJECTIVES -->
         <div class="slide">
             <div class="glass-card">
@@ -488,9 +510,9 @@
                     <div style="flex: 1;">
                         <ul style="list-style: none;">
                             <li class="list-item"><span class="list-icon">🍓</span><strong>Hardware:</strong> Raspberry Pi 5 / 4B</li>
-                            <li class="list-item"><span class="list-icon">📷</span><strong>Input:</strong> RPi Camera Module v2</li>
-                            <li class="list-item"><span class="list-icon">⚙️</span><strong>Backend:</strong> OpenCV + Ultralytics Engine</li>
-                            <li class="list-item"><span class="list-icon">⚡</span><strong>Status:</strong> Successful Real-Time Inference</li>
+                            <li class="list-item"><span class="list-icon">⚠️</span><strong>Performance Finding:</strong> The device struggles with real-time throughput (~3-5 FPS).</li>
+                            <li class="list-item"><span class="list-icon">⚙️</span><strong>Constraint:</strong> High CPU/RAM utilization causes noticeable latency in detection.</li>
+                            <li class="list-item"><span class="list-icon">💡</span><strong>Conclusion:</strong> RasPi alone is insufficient for high-speed real-time response without hardware acceleration (NPU/TPU).</li>
                         </ul>
                         <p style="margin-top: 20px; font-size: 0.9rem; color: var(--text-dim);">
                             The model achieves smooth frame rates on edge hardware by leveraging the YOLOv11 nano architecture's efficiency.
@@ -506,9 +528,9 @@
                 <div class="badge">Summary</div>
                 <h2 class="section-title">Conclusion & Future Work</h2>
                 <div style="text-align: left; margin-top: 20px;">
-                    <p style="margin-bottom: 15px;">✅ <strong>YOLOv11n</strong> demonstrated high efficacy for real-time drowsiness monitoring.</p>
-                    <p style="margin-bottom: 15px;">✅ <strong>Edge Viability:</strong> Successful deployment on Raspberry Pi proves low-power accessibility.</p>
-                    <p style="margin-bottom: 15px;">🔭 <strong>Future Directions:</strong> Integration of multi-modal sensors and active haptic feedback systems.</p>
+                    <p style="margin-bottom: 15px;">✅ <strong>YOLOv11n</strong> provides superior detection accuracy but high computational demand.</p>
+                    <p style="margin-bottom: 15px;">❌ <strong>Hardware Limitation:</strong> Standalone Raspberry Pi exhibits low FPS, hindering real-world deployment.</p>
+                    <p style="margin-bottom: 15px;">🔭 <strong>Future:</strong> Implementation of TensorRT/OpenVINO or external accelerators (Coral TPU).</p>
                 </div>
             </div>
         </div>
