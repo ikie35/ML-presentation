@@ -321,10 +321,10 @@
                     <div class="post-content">
                         <div class="post-text-body">
                             <h2 class="post-title">The Problem</h2>
-                            <div style="text-align: left; max-width: 600px; margin: 0 auto;">
-                                <div class="list-item">🛑 <b>Fatalities:</b> Fatigue contributes to a large % of road deaths.</div>
-                                <div class="list-item">🔌 <b>Intrusive:</b> Current sensors are impractical for daily use.</div>
-                                <div class="list-item">💻 <b>Hardware:</b> AI solutions often require expensive GPUs.</div>
+                            <div style="text-align: left; max-width: 900px; margin: 0 auto; line-height: 1.6;">
+                                <div class="list-item">🛑 <b>Fatalities:</b> Driver fatigue is estimated to be a contributing factor in up to 20% of fatal road accidents globally. It remains a critical safety gap that traditional monitoring fails to address.</div>
+                                <div class="list-item">🔌 <b>Intrusive Sensors:</b> Existing solutions often rely on physiological sensors (EEG/ECG) that are uncomfortable, distracting, and impractical for long-term daily driving.</div>
+                                <div class="list-item">💻 <b>Hardware Barrier:</b> Most high-accuracy AI models require significant GPU power. There is a lack of efficient solutions capable of running on low-cost edge devices like the Raspberry Pi.</div>
                             </div>
                         </div>
                     </div>
@@ -357,10 +357,16 @@
                     <div class="post-header"><div class="user-avatar">🌟</div><span class="username">project_significance</span></div>
                     <div class="post-content">
                         <div class="post-text-body">
-                            <h2 class="post-title">Significance</h2>
-                            <div class="stat-grid">
-                                <div class="stat-pill"><div class="stat-label">Safety</div><p style="font-size:0.85rem">Preventing fatigue-based accidents</p></div>
-                                <div class="stat-pill"><div class="stat-label">Edge AI</div><p style="font-size:0.85rem">Pushing the limits of YOLO11 on ARM</p></div>
+                            <h2 class="post-title">Project Significance</h2>
+                            <div class="stat-grid" style="max-width: 1100px;">
+                                <div class="stat-pill">
+                                    <div class="stat-label">Safety Impact</div>
+                                    <p style="font-size:1.1rem; color: #ccc; margin-top: 10px;">By providing real-time alerts, this project can significantly reduce the incidence of fatigue-related collisions, potentially saving lives and reducing economic loss from vehicular damage.</p>
+                                </div>
+                                <div class="stat-pill">
+                                    <div class="stat-label">Technical Contribution</div>
+                                    <p style="font-size:1.1rem; color: #ccc; margin-top: 10px;">This implementation demonstrates the viability of YOLOv11 nano on ARM-based architectures, pushing the boundaries of what is possible with low-power edge computing in the automotive sector.</p>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -375,7 +381,11 @@
                     <div class="post-content">
                         <div class="post-text-body">
                             <h2 class="post-title">Methodology</h2>
-                            <p class="post-desc">1. Data Augmentation & Splitting<br>2. YOLOv11n Fine-tuning<br>3. Hardware Inference Optimization</p>
+                            <div style="text-align: left; max-width: 950px; margin: 0 auto; line-height: 1.8;">
+                                <p style="margin-bottom: 15px;">🔍 <b>Dataset Curating:</b> Aggregated and labeled 1,419 images from the Roboflow Universe, specifically targeting diverse eye-states and lighting conditions to ensure model robustness.</p>
+                                <p style="margin-bottom: 15px;">🏗️ <b>Model Selection:</b> Leveraged the <b>YOLOv11 nano</b> architecture, fine-tuning it for binary classification (Open vs. Closed eyes) while maintaining a minimal parameter count for speed.</p>
+                                <p>🚀 <b>Deployment:</b> Implemented a Python-based inference pipeline optimized for the Raspberry Pi environment, utilizing OpenCV for real-time video stream processing and decision logic.</p>
+                            </div>
                         </div>
                     </div>
                     <div class="post-footer"><div class="post-actions">❤️ 💬 🚀</div><div class="post-caption"><b>system_methodology</b> Pipeline for optimized drowsiness detection.</div></div>
