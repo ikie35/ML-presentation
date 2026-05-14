@@ -270,7 +270,7 @@
         <div class="nav-item"><div class="nav-icon-box"></div></div>
         <div class="nav-item"><div class="nav-icon-box"></div></div>
         <div class="nav-item"><div class="nav-icon-box"></div></div>
-        <div class="nav-item"><div class="nav-icon-box"></div></div>
+        <div class="nav-item" onclick="toggleFullscreen()"><div class="nav-icon-box" title="Full Screen">⛶</div></div>
     </div>
 
     <div class="presentation-container">
@@ -590,9 +590,20 @@
             document.getElementById('story-' + n).scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
         }
 
+        function toggleFullscreen() {
+            if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen();
+            } else {
+                if (document.exitFullscreen) {
+                    document.exitFullscreen();
+                }
+            }
+        }
+
         document.addEventListener('keydown', e => {
             if (e.key === 'ArrowRight' || e.key === ' ') moveSlide(1);
             if (e.key === 'ArrowLeft') moveSlide(-1);
+            if (e.key === 'f') toggleFullscreen();
         });
     </script>
 </body>
