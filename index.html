@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DrowsyDetect | Research Project</title>
+    <title>DrowsyDetect | Research Presentation</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -14,7 +14,7 @@
             --ig-text-dim: #a8a8a8;
             --ig-link: #0095f6;
             --ig-gradient: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2397 75%, #ad38e7 100%);
-            --transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            --transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -23,9 +23,8 @@
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
             background: var(--ig-bg);
             color: var(--ig-text);
-            overflow-x: hidden;
-            display: flex;
-            justify-content: center;
+            overflow: hidden;
+            height: 100vh;
         }
 
         /* Sidebar Navigation */
@@ -40,6 +39,7 @@
             display: flex;
             flex-direction: column;
             gap: 30px;
+            z-index: 100;
         }
 
         .logo {
@@ -62,27 +62,31 @@
             transition: background 0.2s;
             font-weight: 500;
         }
-
         .nav-item:hover { background: rgba(255, 255, 255, 0.1); }
         .nav-item.active { font-weight: 700; }
 
-        .nav-icon { width: 24px; height: 24px; border: 2px solid var(--ig-text); border-radius: 4px; }
-
-        /* Main Content area */
-        .main-container {
+        /* Main Slideshow area */
+        .presentation-container {
             margin-left: 245px;
-            width: 100%;
-            max-width: 630px;
-            padding: 40px 20px;
+            width: calc(100% - 245px);
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
         }
 
-        /* Stories */
+        /* Top Stories Area (Fixed) */
+        .stories-wrapper {
+            width: 100%;
+            max-width: 630px;
+            padding: 20px 0;
+            z-index: 10;
+        }
         .stories-container {
             display: flex;
             gap: 15px;
             overflow-x: auto;
-            padding-bottom: 20px;
-            margin-bottom: 30px;
             scrollbar-width: none;
         }
         .stories-container::-webkit-scrollbar { display: none; }
@@ -94,7 +98,9 @@
             gap: 8px;
             cursor: pointer;
             min-width: 70px;
+            transition: transform 0.2s;
         }
+        .story:hover { transform: scale(1.05); }
 
         .story-circle {
             width: 66px;
@@ -106,6 +112,7 @@
             align-items: center;
             justify-content: center;
         }
+        .story.active .story-circle { background: #555; } /* Seen state */
 
         .story-inner {
             width: 100%;
@@ -117,73 +124,104 @@
             align-items: center;
             justify-content: center;
             font-weight: 800;
-            font-size: 0.8rem;
+            font-size: 0.7rem;
+            color: #fff;
         }
 
-        .story-label { font-size: 0.75rem; color: var(--ig-text); max-width: 70px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+        .story-label { font-size: 0.7rem; color: var(--ig-text); max-width: 70px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 
-        /* Posts (Slides) */
-        .post {
+        /* Slides */
+        .slides-viewport {
+            flex: 1;
+            width: 100%;
+            max-width: 500px;
+            position: relative;
+            perspective: 1000px;
+            margin-bottom: 20px;
+        }
+
+        .slide {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateX(50px);
+            transition: var(--transition);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .slide.active {
+            opacity: 1;
+            visibility: visible;
+            transform: translateX(0);
+        }
+
+        .slide.prev {
+            opacity: 0;
+            transform: translateX(-50px);
+        }
+
+        /* Post Aesthetic */
+        .post-card {
             background: var(--ig-card);
             border: 1px solid var(--ig-border);
             border-radius: 8px;
-            margin-bottom: 25px;
-            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            cursor: pointer;
         }
 
         .post-header {
-            padding: 14px;
+            padding: 12px;
             display: flex;
             align-items: center;
-            justify-content: space-between;
+            gap: 10px;
         }
-
-        .user-info { display: flex; align-items: center; gap: 10px; }
         .user-avatar { width: 32px; height: 32px; border-radius: 50%; background: var(--ig-gradient); display: flex; align-items: center; justify-content: center; font-size: 0.7rem; font-weight: 800; }
         .username { font-size: 0.85rem; font-weight: 600; }
-        .post-type { font-size: 0.75rem; color: var(--ig-text-dim); }
 
         .post-content {
-            width: 100%;
-            min-height: 400px;
+            flex: 1;
             background: #050505;
             display: flex;
             align-items: center;
             justify-content: center;
-            position: relative;
             overflow: hidden;
             border-top: 1px solid var(--ig-border);
             border-bottom: 1px solid var(--ig-border);
+            position: relative;
         }
-
         .post-content img { width: 100%; height: 100%; object-fit: contain; }
 
-        .post-text-content {
-            padding: 40px;
-            text-align: left;
+        .post-text-body {
+            padding: 30px;
             width: 100%;
+            text-align: left;
         }
+        .post-title { font-size: 1.4rem; font-weight: 800; margin-bottom: 12px; background: var(--ig-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .post-desc { font-size: 0.9rem; line-height: 1.5; color: var(--ig-text); }
 
-        .post-title { font-size: 1.5rem; font-weight: 800; margin-bottom: 15px; background: var(--ig-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        .post-desc { font-size: 0.95rem; line-height: 1.6; color: var(--ig-text); }
+        .post-footer { padding: 12px; }
+        .post-actions { display: flex; gap: 14px; margin-bottom: 8px; font-size: 1.1rem; }
+        .post-caption { font-size: 0.8rem; line-height: 1.4; }
 
-        .post-footer { padding: 14px; }
-        .post-actions { display: flex; gap: 15px; margin-bottom: 12px; font-size: 1.2rem; }
-        .post-stats { font-size: 0.85rem; font-weight: 600; margin-bottom: 8px; }
-        .post-caption { font-size: 0.85rem; line-height: 1.5; }
-        .post-caption b { cursor: pointer; }
-        .post-time { font-size: 0.65rem; color: var(--ig-text-dim); text-transform: uppercase; margin-top: 8px; letter-spacing: 0.5px; }
-
-        /* Stats Grid for IG */
-        .stat-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-top: 15px; }
-        .stat-pill { background: #121212; padding: 15px; border-radius: 8px; border: 1px solid var(--ig-border); }
-        .stat-num { font-size: 1.4rem; font-weight: 800; color: var(--ig-link); }
-        .stat-label { font-size: 0.7rem; color: var(--ig-text-dim); text-transform: uppercase; }
+        /* Progress Dots */
+        .progress-dots {
+            position: absolute; bottom: -25px; left: 50%; transform: translateX(-50%);
+            display: flex; gap: 4px;
+        }
+        .dot { width: 6px; height: 6px; border-radius: 50%; background: #333; transition: 0.3s; }
+        .dot.active { background: var(--ig-link); transform: scale(1.2); }
 
         /* Mobile specific */
         @media (max-width: 768px) {
             .sidebar { display: none; }
-            .main-container { margin-left: 0; padding-top: 20px; }
+            .presentation-container { margin-left: 0; width: 100%; padding: 0 10px; }
+            .slides-viewport { max-width: 100%; }
         }
     </style>
 </head>
@@ -201,182 +239,210 @@
         <div class="nav-item">Profile</div>
     </div>
 
-    <div class="main-container">
-        <!-- STORIES (Slide Nav) -->
-        <div class="stories-container">
-            <div class="story" onclick="scrollToPost('intro')">
-                <div class="story-circle"><div class="story-inner">INTRO</div></div>
-                <div class="story-label">Introduction</div>
-            </div>
-            <div class="story" onclick="scrollToPost('problem')">
-                <div class="story-circle"><div class="story-inner">PROB</div></div>
-                <div class="story-label">The Problem</div>
-            </div>
-            <div class="story" onclick="scrollToPost('method')">
-                <div class="story-circle"><div class="story-inner">TECH</div></div>
-                <div class="story-label">Methodology</div>
-            </div>
-            <div class="story" onclick="scrollToPost('results')">
-                <div class="story-circle"><div class="story-inner">DATA</div></div>
-                <div class="story-label">Results</div>
-            </div>
-            <div class="story" onclick="scrollToPost('deploy')">
-                <div class="story-circle"><div class="story-inner">EDGE</div></div>
-                <div class="story-label">Deployment</div>
-            </div>
-            <div class="story" onclick="scrollToPost('findings')">
-                <div class="story-circle"><div class="story-inner">LIMIT</div></div>
-                <div class="story-label">Findings</div>
-            </div>
-        </div>
-
-        <!-- POST 1: TITLE/INTRO -->
-        <div class="post" id="intro">
-            <div class="post-header">
-                <div class="user-info">
-                    <div class="user-avatar">CL</div>
-                    <div>
-                        <div class="username">crischan_larita</div>
-                        <div class="post-type">Mindanao, Philippines</div>
-                    </div>
+    <div class="presentation-container">
+        <!-- TOP STORIES (Navigation) -->
+        <div class="stories-wrapper">
+            <div class="stories-container">
+                <div class="story" onclick="goTo(0)" id="story-0">
+                    <div class="story-circle"><div class="story-inner">INTRO</div></div>
+                    <div class="story-label">Introduction</div>
                 </div>
-                <div style="font-weight: bold;">...</div>
-            </div>
-            <div class="post-content">
-                <img src="assets/hero.png" alt="Hero">
-                <div style="position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,0.8), transparent); display: flex; flex-direction: column; justify-content: flex-end; padding: 20px;">
-                    <h1 style="font-size: 2rem; font-weight: 900;">Drowsiness Detection</h1>
-                    <p style="font-size: 0.9rem; opacity: 0.8;">Machine Learning Research Project</p>
+                <div class="story" onclick="goTo(1)" id="story-1">
+                    <div class="story-circle"><div class="story-inner">PROB</div></div>
+                    <div class="story-label">The Problem</div>
                 </div>
-            </div>
-            <div class="post-footer">
-                <div class="post-actions">❤️ 💬 🚀 <span style="margin-left: auto;">🔖</span></div>
-                <div class="post-stats">95,496 likes</div>
-                <div class="post-caption">
-                    <b>crischan_larita</b> Road safety remains a paramount concern. This research explores intelligent monitoring using <b>#YOLOv11</b> and <b>#EdgeAI</b> to detect fatigue in real-time. 
+                <div class="story" onclick="goTo(2)" id="story-2">
+                    <div class="story-circle"><div class="story-inner">TECH</div></div>
+                    <div class="story-label">Methodology</div>
                 </div>
-                <div class="post-time">2 hours ago</div>
-            </div>
-        </div>
-
-        <!-- POST 2: PROBLEM -->
-        <div class="post" id="problem">
-            <div class="post-header">
-                <div class="user-info">
-                    <div class="user-avatar">IR</div>
-                    <div>
-                        <div class="username">ike_russel</div>
-                        <div class="post-type">Research Context</div>
-                    </div>
+                <div class="story" onclick="goTo(3)" id="story-3">
+                    <div class="story-circle"><div class="story-inner">DATA</div></div>
+                    <div class="story-label">Results</div>
                 </div>
-            </div>
-            <div class="post-content">
-                <div class="post-text-content">
-                    <h2 class="post-title">The Problem</h2>
-                    <p class="post-desc">
-                        Driver fatigue is a leading cause of fatal traffic accidents. 
-                        Traditional sensors are intrusive, while modern AI often requires heavy GPUs. 
-                        We need a non-intrusive, low-power solution.
-                    </p>
+                <div class="story" onclick="goTo(4)" id="story-4">
+                    <div class="story-circle"><div class="story-inner">LIMIT</div></div>
+                    <div class="story-label">Findings</div>
                 </div>
-            </div>
-            <div class="post-footer">
-                <div class="post-actions">❤️ 💬 🚀</div>
-                <div class="post-caption">
-                    <b>ike_russel</b> Addressing the computational gap in vehicle safety. <b>#ComputerVision</b> <b>#SafetyFirst</b>
+                <div class="story" onclick="goTo(5)" id="story-5">
+                    <div class="story-circle"><div class="story-inner">BIB</div></div>
+                    <div class="story-label">References</div>
                 </div>
             </div>
         </div>
 
-        <!-- POST 3: RESULTS (METRICS) -->
-        <div class="post" id="results">
-            <div class="post-header">
-                <div class="user-info">
-                    <div class="user-avatar">ML</div>
-                    <div>
-                        <div class="username">ml_metrics</div>
-                        <div class="post-type">Quantitative Analysis</div>
+        <!-- SLIDESHOW VIEWPORT -->
+        <div class="slides-viewport" onclick="moveSlide(1)">
+            
+            <!-- SLIDE 1: INTRO -->
+            <div class="slide active">
+                <div class="post-card">
+                    <div class="post-header">
+                        <div class="user-avatar">CL</div>
+                        <span class="username">crischan_larita</span>
+                    </div>
+                    <div class="post-content">
+                        <img src="assets/hero.png" alt="Hero">
+                        <div style="position: absolute; bottom: 0; left: 0; right: 0; padding: 20px; background: linear-gradient(to top, #000, transparent);">
+                            <h2 style="font-size: 1.5rem; font-weight: 900;">Drowsiness Detection</h2>
+                            <p style="font-size: 0.8rem; color: #aaa;">@msu_iit research</p>
+                        </div>
+                    </div>
+                    <div class="post-footer">
+                        <div class="post-actions">❤️ 💬 🚀</div>
+                        <div class="post-caption"><b>crischan_larita</b> Road safety remains a paramount concern. Exploring <b>#YOLOv11</b> for real-time monitoring.</div>
                     </div>
                 </div>
             </div>
-            <div class="post-content">
-                <div class="post-text-content" style="padding: 20px;">
-                    <h2 class="post-title">System Performance</h2>
-                    <div class="stat-grid">
-                        <div class="stat-pill"><div class="stat-num">95.49%</div><div class="stat-label">mAP @ 50</div></div>
-                        <div class="stat-pill"><div class="stat-num">93.54%</div><div class="stat-label">Recall</div></div>
-                        <div class="stat-pill"><div class="stat-num">89.94%</div><div class="stat-label">Precision</div></div>
-                        <div class="stat-pill"><div class="stat-num">50 Epochs</div><div class="stat-label">Training</div></div>
+
+            <!-- SLIDE 2: PROBLEM -->
+            <div class="slide">
+                <div class="post-card">
+                    <div class="post-header">
+                        <div class="user-avatar">IR</div>
+                        <span class="username">ike_russel</span>
+                    </div>
+                    <div class="post-content">
+                        <div class="post-text-body">
+                            <h2 class="post-title">The Problem</h2>
+                            <p class="post-desc">Fatigue is a leading cause of accidents. Existing AI solutions often require heavy GPUs, making them unsuited for edge deployment in vehicles.</p>
+                        </div>
+                    </div>
+                    <div class="post-footer">
+                        <div class="post-actions">❤️ 💬 🚀</div>
+                        <div class="post-caption"><b>ike_russel</b> Addressing computational constraints in road safety.</div>
                     </div>
                 </div>
             </div>
-            <div class="post-footer">
-                <div class="post-actions">❤️ 💬 🚀</div>
-                <div class="post-caption">
-                    <b>ml_metrics</b> Exceptional accuracy achieved on the <b>#Roboflow</b> dataset. High recall is critical for safety-first systems.
+
+            <!-- SLIDE 3: METHODOLOGY -->
+            <div class="slide">
+                <div class="post-card">
+                    <div class="post-header">
+                        <div class="user-avatar">ML</div>
+                        <span class="username">methodology_logs</span>
+                    </div>
+                    <div class="post-content">
+                        <div class="post-text-body">
+                            <h2 class="post-title">Methodology</h2>
+                            <p class="post-desc">Utilizing <b>YOLOv11n</b> (Nano) for its balance of speed and accuracy. Model trained on 1,419 images from Roboflow Universe.</p>
+                        </div>
+                    </div>
+                    <div class="post-footer">
+                        <div class="post-actions">❤️ 💬 🚀</div>
+                        <div class="post-caption"><b>methodology_logs</b> Architecture optimized for ARM-based microcomputers.</div>
+                    </div>
                 </div>
             </div>
+
+            <!-- SLIDE 4: RESULTS -->
+            <div class="slide">
+                <div class="post-card">
+                    <div class="post-header">
+                        <div class="user-avatar">📈</div>
+                        <span class="username">quantitative_results</span>
+                    </div>
+                    <div class="post-content" style="background: #fff; padding: 10px;">
+                        <img src="figures_for_overleaf/results.png" alt="Results">
+                    </div>
+                    <div class="post-footer">
+                        <div class="post-actions">❤️ 💬 🚀</div>
+                        <div class="post-caption"><b>quantitative_results</b> 95.49% mAP achieved. Convergence observed after 50 epochs.</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SLIDE 5: FINDINGS (LIMITATIONS) -->
+            <div class="slide">
+                <div class="post-card">
+                    <div class="post-header">
+                        <div class="user-avatar">⚠️</div>
+                        <span class="username">hardware_findings</span>
+                    </div>
+                    <div class="post-content">
+                        <div class="post-text-body">
+                            <h2 class="post-title" style="color: #ff3b30;">Key Finding</h2>
+                            <p class="post-desc">Standalone Raspberry Pi struggles with real-time throughput (~3-5 FPS).</p>
+                            <div style="margin-top: 15px; padding: 15px; border: 1px solid var(--ig-border); border-radius: 8px;">
+                                <p style="color: #4cd964; font-weight: bold; font-size: 0.8rem;">💡 RECOMMENDATION</p>
+                                <p style="font-size: 0.85rem;">Incorporate an <b>AI HAT</b> (Hailo-8L) for 30+ FPS performance.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="post-footer">
+                        <div class="post-actions">❤️ 💬 🚀</div>
+                        <div class="post-caption"><b>hardware_findings</b> Hardware acceleration is essential for high-speed vehicular safety.</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SLIDE 6: REFERENCES -->
+            <div class="slide">
+                <div class="post-card">
+                    <div class="post-header">
+                        <div class="user-avatar">📚</div>
+                        <span class="username">bibliography</span>
+                    </div>
+                    <div class="post-content">
+                        <div class="post-text-body" style="font-size: 0.75rem; color: #ccc;">
+                            <h2 class="post-title">References</h2>
+                            <p style="margin-bottom: 10px;">[1] Ultralytics YOLOv11 (2024)</p>
+                            <p style="margin-bottom: 10px;">[2] Redmon et al., CVPR (2016)</p>
+                            <p>[3] Roboflow Universe Dataset (2024)</p>
+                        </div>
+                    </div>
+                    <div class="post-footer">
+                        <div class="post-actions">❤️ 💬 🚀</div>
+                        <div class="post-caption"><b>bibliography</b> Scholarly foundations for driver state monitoring.</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="progress-dots" id="dots"></div>
         </div>
 
-        <!-- POST 4: FIGURES -->
-        <div class="post">
-            <div class="post-header">
-                <div class="user-info">
-                    <div class="user-avatar">📊</div>
-                    <div>
-                        <div class="username">research_figures</div>
-                    </div>
-                </div>
-            </div>
-            <div class="post-content" style="background: #fff;">
-                <img src="figures_for_overleaf/confusion_matrix_normalized.png" alt="Confusion Matrix">
-            </div>
-            <div class="post-footer">
-                <div class="post-actions">❤️ 💬 🚀</div>
-                <div class="post-caption">
-                    <b>research_figures</b> Analyzing the normalized confusion matrix. <b>#DeepLearning</b> <b>#Matrix</b>
-                </div>
-            </div>
-        </div>
-
-        <!-- POST 5: EDGE FINDINGS -->
-        <div class="post" id="findings">
-            <div class="post-header">
-                <div class="user-info">
-                    <div class="user-avatar">🍓</div>
-                    <div>
-                        <div class="username">raspberry_pi_logs</div>
-                        <div class="post-type">Hardware Limitations</div>
-                    </div>
-                </div>
-            </div>
-            <div class="post-content">
-                <img src="assets/rpi.png" alt="RPI">
-                <div style="position: absolute; inset: 0; background: rgba(0,0,0,0.6); display: flex; flex-direction: column; justify-content: center; padding: 30px;">
-                    <h3 style="color: #ff3b30; margin-bottom: 10px;">⚠️ Key Finding</h3>
-                    <p style="font-size: 1rem; line-height: 1.4;">
-                        Standalone Raspberry Pi struggles with workload (~3-5 FPS). High CPU utilization causes latency.
-                    </p>
-                    <hr style="margin: 15px 0; border: 0; border-top: 1px solid rgba(255,255,255,0.2);">
-                    <p style="font-weight: bold; color: #4cd964;">
-                        💡 Recommendation: Incorporate an AI HAT (Hailo-8L) for 30+ FPS.
-                    </p>
-                </div>
-            </div>
-            <div class="post-footer">
-                <div class="post-actions">❤️ 💬 🚀</div>
-                <div class="post-caption">
-                    <b>raspberry_pi_logs</b> Real-world testing reveals the need for hardware acceleration. <b>#AIHat</b> <b>#HardwareConstraints</b>
-                </div>
-            </div>
-        </div>
-
+        <div style="font-size: 0.7rem; color: #444; margin-top: 10px;">Click post to advance &nbsp;|&nbsp; Arrows to navigate</div>
     </div>
 
     <script>
-        function scrollToPost(id) {
-            document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
+        let current = 0;
+        const slides = document.querySelectorAll('.slide');
+        const dotsContainer = document.getElementById('dots');
+        const stories = document.querySelectorAll('.story');
+
+        // Init dots
+        slides.forEach((_, i) => {
+            const dot = document.createElement('div');
+            dot.className = 'dot' + (i === 0 ? ' active' : '');
+            dotsContainer.appendChild(dot);
+        });
+
+        function moveSlide(dir) {
+            const next = (current + dir + slides.length) % slides.length;
+            goTo(next);
         }
+
+        function goTo(n) {
+            slides[current].classList.remove('active');
+            slides[current].classList.add('prev');
+            
+            // Cleanup prev class
+            const old = current;
+            setTimeout(() => slides[old].classList.remove('prev'), 500);
+
+            current = n;
+            slides[current].classList.add('active');
+            
+            // Update dots
+            document.querySelectorAll('.dot').forEach((d, i) => d.classList.toggle('active', i === current));
+            
+            // Update stories
+            stories.forEach((s, i) => s.classList.toggle('active', i < current));
+        }
+
+        document.addEventListener('keydown', e => {
+            if (e.key === 'ArrowRight' || e.key === ' ') moveSlide(1);
+            if (e.key === 'ArrowLeft') moveSlide(-1);
+        });
     </script>
 </body>
 </html>
